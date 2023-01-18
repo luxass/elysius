@@ -29,7 +29,7 @@ const path = await find(["package.json", "tsconfig.json"], {
       const content = JSON.parse(await readFile(file, "utf-8"));
       return content.version;
     }
-    return true;
+    return false;
   }
 }); // returns `package.json` if it has a version field
 
@@ -41,7 +41,7 @@ const path = await findSync(["package.json", "tsconfig.json"], {
       const content = JSON.parse(readFileSync(file, "utf-8"));
       return content.version;
     }
-    return true;
+    return false;
   }
 }); // returns `package.json` if it has a version field
 ```
