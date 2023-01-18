@@ -1,7 +1,7 @@
 # elysius
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@luxass/find-config"><img src="https://img.shields.io/npm/v/@luxass/find-config?style=for-the-badge&color=3FA7D6&label="></a>
+  <a href="https://www.npmjs.com/package/elysius"><img src="https://img.shields.io/npm/v/elysius?style=for-the-badge&color=3FA7D6&label="></a>
 <p>
 
 ## Install
