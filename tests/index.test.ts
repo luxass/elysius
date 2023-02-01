@@ -61,7 +61,7 @@ describe("findSync", () => {
     expect(result).not.toBe(join(__dirname, "fixture", "minions.jpg"));
   });
 
-  test("throw error when using async in test inside sync", () => {
+  test("throw error when using async test inside sync", () => {
     const result = () =>
       findSync("package.json", {
         cwd: join(__dirname, "fixture", "a", "b"),

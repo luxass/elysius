@@ -61,10 +61,7 @@ export function findSync(
       try {
         statSync(file);
         const test = options?.test || (() => true);
-        if (
-          Object.getPrototypeOf(test).constructor.name ===
-          "AsyncFunction"
-        ) {
+        if (Object.getPrototypeOf(test).constructor.name === "AsyncFunction") {
           throw new TypeError("You are using a async test in sync mode.");
         }
 
