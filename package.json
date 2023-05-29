@@ -34,16 +34,14 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
-    "lint": "eslint --cache {src,tests}/**/*.ts"
+    "lint": "eslint {src,tests}/**/*.ts"
   },
   "devDependencies": {
     "@luxass/eslint-config": "^2.2.6",
-    "@luxass/prettier-config": "^1.1.4",
     "@types/node": "^18.11.18",
     "eslint": "^8.32.0",
-    "prettier": "^2.8.3",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4",
-    "vitest": "^0.27.2"
+    "vitest": "^0.31.0"
   }
 }
