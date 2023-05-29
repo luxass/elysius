@@ -37,7 +37,7 @@
     "lint": "eslint {src,tests}/**/*.ts"
   },
   "devDependencies": {
-    "@luxass/eslint-config": "^2.2.6",
+    "@luxass/eslint-config": "^3.0.0",
     "@types/node": "^18.11.18",
     "eslint": "^8.32.0",
     "tsup": "^6.5.0",
