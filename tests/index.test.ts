@@ -9,7 +9,7 @@ import { find, findSync } from "../src";
 describe("find", () => {
   test("find minions", async () => {
     const result = await find(["minions.jpg", "package.json"], {
-      cwd: join(__dirname, "fixture", "a", "b")
+      cwd: join(__dirname, "fixture", "a", "b"),
     });
 
     expect(result).not.toBe(join(__dirname, "fixture", "package.json"));
@@ -18,7 +18,7 @@ describe("find", () => {
 
   test("find package.json", async () => {
     const result = await find("package.json", {
-      cwd: join(__dirname, "fixture", "a", "b")
+      cwd: join(__dirname, "fixture", "a", "b"),
     });
 
     expect(result).toBe(join(__dirname, "fixture", "package.json"));
@@ -35,7 +35,7 @@ describe("find", () => {
           return content.version;
         }
         return false;
-      }
+      },
     });
 
     expect(result).toBe(join(__dirname, "fixture", "package.json"));
@@ -45,7 +45,7 @@ describe("find", () => {
 describe("findSync", () => {
   test("find minions", () => {
     const result = findSync(["minions.jpg", "package.json"], {
-      cwd: join(__dirname, "fixture", "a", "b")
+      cwd: join(__dirname, "fixture", "a", "b"),
     });
 
     expect(result).not.toBe(join(__dirname, "fixture", "package.json"));
@@ -54,7 +54,7 @@ describe("findSync", () => {
 
   test("find package.json", () => {
     const result = findSync("package.json", {
-      cwd: join(__dirname, "fixture", "a", "b")
+      cwd: join(__dirname, "fixture", "a", "b"),
     });
 
     expect(result).toBe(join(__dirname, "fixture", "package.json"));
@@ -72,11 +72,11 @@ describe("findSync", () => {
             return content.version;
           }
           return false;
-        }
+        },
       });
 
     expect(() => result()).toThrowError(
-      /^You are using a async test in sync mode.$/
+      /^You are using a async test in sync mode.$/,
     );
   });
 
@@ -90,7 +90,7 @@ describe("findSync", () => {
           return content.version;
         }
         return false;
-      }
+      },
     });
 
     expect(result).toBe(join(__dirname, "fixture", "package.json"));

@@ -5,5 +5,11 @@ export default defineConfig({
   format: ["esm", "cjs"],
   clean: true,
   treeshake: true,
-  dts: true
+  dts: true,
+  bundle: true,
+  outExtension(ctx) {
+    return {
+      js: ctx.format === "cjs" ? ".cjs" : ".mjs",
+    };
+  },
 });
