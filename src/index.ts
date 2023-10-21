@@ -27,11 +27,11 @@ export interface Options {
  * @param {string | string[]} name - The name(s) of the file to find.
  * @param {Options} options - The options to use.
  * @returns {Promise<string | null>} The path to the file or null if it was not found.
- * 
+ *
  * @example
  * ```
  * import { find } from "elysius";
- * 
+ *
  * const path = await find("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
  * ```
  */
@@ -66,11 +66,11 @@ export async function find(
  * @param {string | string[]} name - The name(s) of the file to find.
  * @param {Options} options - The options to use.
  * @returns {string | null} The path to the file or null if it was not found.
- * 
+ *
  * @example
  * ```
  * import { findSync } from "elysius";
- * 
+ *
  * const path = findSync("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
  * ```
  */
