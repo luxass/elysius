@@ -25,6 +25,9 @@ jobs:
 
       - name: 🔠 Lint project
         run: pnpm lint
+      
+      - name: ✅ TypeCheck project
+        run: pnpm typecheck
 
   test:
     runs-on: ubuntu-latest
