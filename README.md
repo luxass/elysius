@@ -18,10 +18,10 @@ pnpm install elysius
 import { find, findSync } from "elysius";
 
 const path = await find("package.json"); // returns `null` if not found
-const path = await findSync("package.json"); // returns `null` if not found
+const path = findSync("package.json"); // returns `null` if not found
 
 const path = await find(["package.json", "tsconfig.json"]); // returns the first found file
-const path = await findSync(["package.json", "tsconfig.json"]); // returns the first found file
+const path = findSync(["package.json", "tsconfig.json"]); // returns the first found file
 
 const path = await find(["package.json", "tsconfig.json"], {
   cwd: "src",
@@ -35,7 +35,7 @@ const path = await find(["package.json", "tsconfig.json"], {
   }
 }); // returns `package.json` if it has a version field
 
-const path = await findSync(["package.json", "tsconfig.json"], {
+const path = findSync(["package.json", "tsconfig.json"], {
   cwd: "src",
   test: (path) => {
     const base = basename(file);

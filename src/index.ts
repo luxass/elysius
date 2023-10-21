@@ -22,8 +22,21 @@ export interface Options {
   test?: (file: string) => boolean | Promise<boolean>
 }
 
+/**
+ * Find a file in a directory and its parents.
+ * @param {string | string[]} name - The name(s) of the file to find.
+ * @param {Options} options - The options to use.
+ * @returns {Promise<string | null>} The path to the file or null if it was not found.
+ * 
+ * @example
+ * ```
+ * import { find } from "elysius";
+ * 
+ * const path = await find("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
+ * ```
+ */
 export async function find(
-  name: string | Array<string>,
+  name: string | string[],
   options?: Options,
 ): Promise<string | null> {
   let dir = resolve(options?.cwd || process.cwd());
@@ -48,8 +61,21 @@ export async function find(
   return null;
 }
 
+/**
+ * Find a file in a directory and its parents.
+ * @param {string | string[]} name - The name(s) of the file to find.
+ * @param {Options} options - The options to use.
+ * @returns {string | null} The path to the file or null if it was not found.
+ * 
+ * @example
+ * ```
+ * import { findSync } from "elysius";
+ * 
+ * const path = findSync("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
+ * ```
+ */
 export function findSync(
-  name: string | Array<string>,
+  name: string | string[],
   options?: Options,
 ): string | null {
   let dir = resolve(options?.cwd || process.cwd());
