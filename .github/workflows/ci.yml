@@ -25,7 +25,7 @@ jobs:
 
       - name: 🔠 Lint project
         run: pnpm lint
-      
+
       - name: ✅ TypeCheck project
         run: pnpm typecheck
 
