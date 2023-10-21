@@ -2,6 +2,7 @@
   "name": "elysius",
   "type": "module",
   "version": "0.1.1",
+  "packageManager": "pnpm@8.9.0",
   "description": "Find files and directories by traversing",
   "author": {
     "name": "Lucas Nørgård",
@@ -19,9 +20,14 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "main": "./dist/index.cjs",
@@ -30,6 +36,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -39,11 +48,11 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@luxass/eslint-config": "^3.3.1",
+    "@luxass/eslint-config": "^3.3.2",
     "@types/node": "^18.11.18",
-    "eslint": "^8.46.0",
+    "eslint": "^8.52.0",
     "tsup": "^7.2.0",
-    "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }
