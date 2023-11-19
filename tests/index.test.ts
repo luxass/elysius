@@ -2,12 +2,12 @@ import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { find, findSync } from "../src";
 
 describe("find", () => {
-  test("find minions", async () => {
+  it("find minions", async () => {
     const result = await find(["minions.jpg", "package.json"], {
       cwd: join(__dirname, "fixture", "a", "b"),
     });
@@ -16,7 +16,7 @@ describe("find", () => {
     expect(result).toBe(join(__dirname, "fixture", "minions.jpg"));
   });
 
-  test("find package.json", async () => {
+  it("find package.json", async () => {
     const result = await find("package.json", {
       cwd: join(__dirname, "fixture", "a", "b"),
     });
@@ -25,7 +25,7 @@ describe("find", () => {
     expect(result).not.toBe(join(__dirname, "fixture", "minions.jpg"));
   });
 
-  test("find package.json with key", async () => {
+  it("find package.json with key", async () => {
     const result = await find("package.json", {
       cwd: join(__dirname, "fixture", "a", "b"),
       async test(file) {
@@ -43,7 +43,7 @@ describe("find", () => {
 });
 
 describe("findSync", () => {
-  test("find minions", () => {
+  it("find minions", () => {
     const result = findSync(["minions.jpg", "package.json"], {
       cwd: join(__dirname, "fixture", "a", "b"),
     });
@@ -52,7 +52,7 @@ describe("findSync", () => {
     expect(result).toBe(join(__dirname, "fixture", "minions.jpg"));
   });
 
-  test("find package.json", () => {
+  it("find package.json", () => {
     const result = findSync("package.json", {
       cwd: join(__dirname, "fixture", "a", "b"),
     });
@@ -61,7 +61,7 @@ describe("findSync", () => {
     expect(result).not.toBe(join(__dirname, "fixture", "minions.jpg"));
   });
 
-  test("throw error when using async test inside sync", () => {
+  it("throw error when using async test inside sync", () => {
     const result = () =>
       findSync("package.json", {
         cwd: join(__dirname, "fixture", "a", "b"),
@@ -80,7 +80,7 @@ describe("findSync", () => {
     );
   });
 
-  test("find package.json with key", () => {
+  it("find package.json with key", () => {
     const result = findSync("package.json", {
       cwd: join(__dirname, "fixture", "a", "b"),
       test(file) {
