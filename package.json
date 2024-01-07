@@ -1,14 +1,14 @@
 {
   "name": "elysius",
-  "type": "module",
   "version": "1.0.0",
-  "packageManager": "pnpm@8.10.5",
   "description": "Find files and directories by traversing",
+  "type": "module",
   "author": {
     "name": "Lucas Nørgård",
     "email": "lucasnrgaard@gmail.com",
     "url": "https://luxass.dev"
   },
+  "packageManager": "pnpm@8.14.0",
   "license": "MIT",
   "homepage": "https://github.com/luxass/elysius",
   "repository": {
@@ -48,11 +48,12 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@luxass/eslint-config": "^4.0.0-beta.4",
+    "@luxass/eslint-config": "^4.0.1",
     "@types/node": "^20.9.2",
-    "eslint": "^8.54.0",
-    "tsup": "^8.0.0",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "eslint": "^8.56.0",
+    "eslint-plugin-format": "^0.1.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.3"
   }
 }

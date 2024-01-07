@@ -1,6 +1,6 @@
 {
   "name": "elysius-test",
-  "type": "module",
   "version": "0.1.0",
+  "type": "module",
   "private": true
 }
