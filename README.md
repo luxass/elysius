@@ -28,7 +28,7 @@ const path = findSync(["package.json", "tsconfig.json"]); // returns the first f
 
 const path = await find(["package.json", "tsconfig.json"], {
   cwd: "src",
-  test: async (path) => {
+  async test(path) {
     const base = basename(file);
     if (base === "package.json") {
       const content = JSON.parse(await readFile(file, "utf-8"));
@@ -40,7 +40,7 @@ const path = await find(["package.json", "tsconfig.json"], {
 
 const path = findSync(["package.json", "tsconfig.json"], {
   cwd: "src",
-  test: (path) => {
+  test(path) {
     const base = basename(file);
     if (base === "package.json") {
       const content = JSON.parse(readFileSync(file, "utf-8"));
