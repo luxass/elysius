@@ -8,18 +8,18 @@ export interface Options {
    * The directory to start searching from.
    * @default process.cwd()
    */
-  cwd?: string
+  cwd?: string;
 
   /**
    * The path to the directory to stop searching at.
    * @default path.parse(cwd).root
    */
-  stop?: string
+  stop?: string;
 
   /**
    * Test the file before returning it.
    */
-  test?: (file: string) => boolean | Promise<boolean>
+  test?: (file: string) => boolean | Promise<boolean>;
 }
 
 /**
