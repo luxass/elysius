@@ -69,6 +69,23 @@ export interface WalkOptions {
    * @default {false}
    */
   followSymlinks?: boolean
+
+  /**
+   * An array of regular expressions to exclude from the walk.
+   *
+   * @default {[]}
+   */
+  exclude?: RegExp[]
+}
+
+function shouldIncludePath(
+  path: string,
+  exclude?: RegExp[],
+): boolean {
+  if (exclude && exclude.some((pattern): boolean => !!path.match(pattern))) {
+    return false
+  }
+  return true
 }
 
 /**
@@ -84,13 +101,13 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
     includeDirs = true,
     includeSymlinks = true,
     followSymlinks = false,
+    exclude,
   } = options
 
   if (maxDepth < 0) {
     return
   }
-
-  if (includeDirs) {
+  if (includeDirs && shouldIncludePath(dir, exclude)) {
     const info = await stat(dir)
     yield {
       path: dir,
@@ -99,6 +116,9 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
       isDirectory: info.isDirectory(),
       isSymlink: info.isSymbolicLink(),
     }
+  }
+  if (maxDepth < 1 || !shouldIncludePath(dir, exclude)) {
+    return
   }
 
   try {
@@ -116,7 +136,7 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
 
       if (isSymlink) {
         if (!followSymlinks) {
-          if (includeSymlinks) {
+          if (includeSymlinks && shouldIncludePath(path, exclude)) {
             yield {
               path,
               isDirectory,
@@ -145,7 +165,7 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
           includeSymlinks,
           followSymlinks,
         })
-      } else if (includeFiles) {
+      } else if (includeFiles && shouldIncludePath(path, exclude)) {
         yield {
           path,
           isDirectory,
@@ -173,13 +193,14 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
     includeDirs = true,
     includeSymlinks = true,
     followSymlinks = false,
+    exclude,
   } = options
 
   if (maxDepth < 0) {
     return
   }
 
-  if (includeDirs) {
+  if (includeDirs && shouldIncludePath(dir, exclude)) {
     const info = statSync(dir)
     yield {
       path: dir,
@@ -188,6 +209,10 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
       isDirectory: info.isDirectory(),
       isSymlink: info.isSymbolicLink(),
     }
+  }
+
+  if (maxDepth < 1 || !shouldIncludePath(dir, exclude)) {
+    return
   }
 
   let entries
@@ -206,7 +231,7 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
 
     if (isSymlink) {
       if (!followSymlinks) {
-        if (includeSymlinks) {
+        if (includeSymlinks && shouldIncludePath(path, exclude)) {
           yield {
             path,
             name: entry.name,
@@ -232,7 +257,7 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
         includeSymlinks,
         followSymlinks,
       })
-    } else if (includeFiles) {
+    } else if (includeFiles && shouldIncludePath(path, exclude)) {
       yield {
         path,
         name: entry.name,

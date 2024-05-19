@@ -15,6 +15,14 @@ it('should walk directory with default options', async () => {
   expect(files[0].path).toBe(join(__dirname, 'fixtures'))
 })
 
+it('expect walk to throw when root is not a directory', async () => {
+  await expect(async () => {
+    for await (const _ of walk(join(__dirname, 'fixtures', 'package.json'))) {
+      // noop
+    }
+  }).rejects.toThrow(Error(`Error walking path "${normalize(join(__dirname, 'fixtures', 'package.json'))}": ENOTDIR: not a directory, scandir '${normalize(join(__dirname, 'fixtures', 'package.json'))}'`))
+})
+
 it('should only walk root directory when disabled includeFiles and includeSymlinks', async () => {
   const files: WalkEntry[] = []
   for await (const entry of walk(join(__dirname, 'fixtures'), {
@@ -129,6 +137,23 @@ it('should follow symlinks', async () => {
     isDirectory: false,
     isSymlink: false,
   })
+})
+
+it('should exclude files', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures'), {
+    exclude: [
+      /minions\.jpg/,
+    ],
+  })) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(7)
+  expect(files[0].name).toBe('fixtures')
+  expect(files[0].isDirectory).toBe(true)
+  expect(files[0].path).toBe(join(__dirname, 'fixtures'))
+  expect(files.map((file) => file.name)).not.toContain('minions.jpg')
 })
 
 describe('sync', () => {
@@ -266,5 +291,22 @@ describe('sync', () => {
       isDirectory: false,
       isSymlink: false,
     })
+  })
+
+  it('should exclude files', () => {
+    const files: WalkEntry[] = []
+    for (const entry of walkSync(join(__dirname, 'fixtures'), {
+      exclude: [
+        /minions\.jpg/,
+      ],
+    })) {
+      files.push(entry)
+    }
+
+    expect(files).toHaveLength(7)
+    expect(files[0].name).toBe('fixtures')
+    expect(files[0].isDirectory).toBe(true)
+    expect(files[0].path).toBe(join(__dirname, 'fixtures'))
+    expect(files.map((file) => file.name)).not.toContain('minions.jpg')
   })
 })
