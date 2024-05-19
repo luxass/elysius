@@ -1,6 +1,6 @@
 {
   "name": "elysius",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Find files and directories by traversing",
   "type": "module",
   "author": {
