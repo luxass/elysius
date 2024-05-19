@@ -3,7 +3,8 @@
   "version": "1.0.4",
   "exports": {
     ".": "./src/index.ts",
-    "./find": "./src/find.ts"
+    "./find": "./src/find.ts",
+    "./walk": "./src/walk.ts"
   },
   "exclude": [
     "tsup.config.ts",

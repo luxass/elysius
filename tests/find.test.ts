@@ -12,10 +12,10 @@ it('finds a single file without cwd', async () => {
 
 it('finds a single file with cwd', async () => {
   const result = await find('package.json', {
-    cwd: join(__dirname, 'fixture', 'a', 'b'),
+    cwd: join(__dirname, 'fixtures', 'a', 'b'),
   })
 
-  expect(result).toBe(join(__dirname, 'fixture', 'package.json'))
+  expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
   expect(result).not.toBe(join(__dirname, 'package.json'))
 })
 
@@ -27,7 +27,7 @@ it('expect null when no files found', async () => {
 
 it('find file with custom test function', async () => {
   const result = await find('package.json', {
-    cwd: join(__dirname, 'fixture', 'a', 'b'),
+    cwd: join(__dirname, 'fixtures', 'a', 'b'),
     async test(file) {
       const base = basename(file)
       if (base === 'package.json') {
@@ -38,13 +38,13 @@ it('find file with custom test function', async () => {
     },
   })
 
-  expect(result).toBe(join(__dirname, 'fixture', 'package.json'))
+  expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
 })
 
 it('expect find to stop when stop is reached', async () => {
   const result = await find('package.json', {
-    cwd: join(__dirname, 'fixture', 'a', 'b'),
-    stop: join(__dirname, 'fixture', 'a'),
+    cwd: join(__dirname, 'fixtures', 'a', 'b'),
+    stop: join(__dirname, 'fixtures', 'a'),
   })
 
   expect(result).toBeNull()
@@ -59,10 +59,10 @@ describe('find sync', () => {
 
   it('finds a single file with cwd', () => {
     const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixture', 'a', 'b'),
+      cwd: join(__dirname, 'fixtures', 'a', 'b'),
     })
 
-    expect(result).toBe(join(__dirname, 'fixture', 'package.json'))
+    expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
     expect(result).not.toBe(join(__dirname, 'package.json'))
   })
 
@@ -74,7 +74,7 @@ describe('find sync', () => {
 
   it('find file with custom test function', () => {
     const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixture', 'a', 'b'),
+      cwd: join(__dirname, 'fixtures', 'a', 'b'),
       test(file) {
         const base = basename(file)
         if (base === 'package.json') {
@@ -85,13 +85,13 @@ describe('find sync', () => {
       },
     })
 
-    expect(result).toBe(join(__dirname, 'fixture', 'package.json'))
+    expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
   })
 
   it('throw error when using async test inside sync', () => {
     const result = () =>
       findSync('package.json', {
-        cwd: join(__dirname, 'fixture', 'a', 'b'),
+        cwd: join(__dirname, 'fixtures', 'a', 'b'),
         async test(file) {
           const base = basename(file)
           if (base === 'package.json') {
@@ -109,8 +109,8 @@ describe('find sync', () => {
 
   it('expect find to stop when stop is reached', () => {
     const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixture', 'a', 'b'),
-      stop: join(__dirname, 'fixture', 'a'),
+      cwd: join(__dirname, 'fixtures', 'a', 'b'),
+      stop: join(__dirname, 'fixtures', 'a'),
     })
 
     expect(result).toBeNull()

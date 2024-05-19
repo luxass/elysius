@@ -4,6 +4,7 @@ export default defineConfig({
   entry: [
     './src/index.ts',
     './src/find.ts',
+    './src/walk.ts',
   ],
   format: ['cjs', 'esm'],
   clean: true,
