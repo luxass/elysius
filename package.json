@@ -29,6 +29,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./find": {
+      "import": {
+        "types": "./dist/find.d.ts",
+        "default": "./dist/find.mjs"
+      },
+      "require": {
+        "types": "./dist/find.d.cts",
+        "default": "./dist/find.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.cjs",

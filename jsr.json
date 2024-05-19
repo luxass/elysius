@@ -2,7 +2,8 @@
   "name": "@luxass/elysius",
   "version": "1.0.4",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./find": "./src/find.ts"
   },
   "exclude": [
     "tsup.config.ts",

@@ -1,10 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
-
 import { describe, expect, it } from 'vitest'
-
-import { find, findSync } from '../src'
+import { find, findSync } from '../src/find'
 
 describe('find', () => {
   it('find minions', async () => {
