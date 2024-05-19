@@ -3,6 +3,9 @@ import { stat } from 'node:fs/promises'
 import { parse, resolve } from 'node:path'
 import process from 'node:process'
 
+/**
+ * Represents the options for searching files.
+ */
 export interface Options {
   /**
    * The directory to start searching from.
