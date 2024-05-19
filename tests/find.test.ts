@@ -4,7 +4,7 @@ import { basename, join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-import { find, findSync } from '../src'
+import { find, findSync } from '../src/find'
 
 describe('find', () => {
   it('find minions', async () => {
