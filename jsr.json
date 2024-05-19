@@ -1,0 +1,14 @@
+{
+  "name": "@luxass/elysius",
+  "version": "1.0.1",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "exclude": [
+    "tsup.config.ts",
+    "eslint.config.js",
+    "pnpm-lock.yaml",
+    ".github/**",
+    "tests/**"
+  ]
+}
