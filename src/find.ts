@@ -20,7 +20,24 @@ export interface FindOptions {
   stop?: string
 
   /**
-   * Test the file before returning it.
+   * A function to test the file.
+   * @param {string} file - The path to the file.
+   * @returns {boolean | Promise<boolean>} Whether the file is valid.
+   *
+   * @example
+   * ```ts
+   * // traverses up until it finds a package.json with a version field
+   * const result = await find('package.json', {
+   *   async test(file) {
+   *     const base = basename(file)
+   *     if (base === 'package.json') {
+   *       const content = JSON.parse(await readFile(file, 'utf-8'))
+   *       return content.version != null
+   *     }
+   *     return false
+   *   },
+   * })
+   * ```
    */
   test?: (file: string) => boolean | Promise<boolean>
 }
