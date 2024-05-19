@@ -112,14 +112,18 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
     for (const entry of entries) {
       const path = join(dir, entry.name)
 
-      if (entry.isSymbolicLink()) {
+      let isDirectory = entry.isDirectory()
+      let isFile = entry.isFile()
+      let isSymlink = entry.isSymbolicLink()
+
+      if (isSymlink) {
         if (!followSymlinks) {
           if (includeSymlinks) {
             yield {
               path,
-              isDirectory: entry.isDirectory(),
-              isFile: entry.isFile(),
-              isSymlink: entry.isSymbolicLink(),
+              isDirectory,
+              isFile,
+              isSymlink,
               name: entry.name,
             }
           }
@@ -129,12 +133,13 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
         // Caveat emptor: don't assume |path| is not a symlink. realpath()
         // resolves symlinks but another process can replace the file system
         // entity with a different type of entity before we call lstat().
-        const { isDirectory, isSymbolicLink } = await lstat(realPath)
-        entry.isDirectory = isDirectory
-        entry.isSymbolicLink = isSymbolicLink
+        const stats = await lstat(realPath)
+        isDirectory = stats.isDirectory()
+        isSymlink = stats.isSymbolicLink()
+        isFile = stats.isFile()
       }
 
-      if (entry.isSymbolicLink() || entry.isDirectory()) {
+      if (isSymlink || isDirectory) {
         yield * walk(path, {
           maxDepth: maxDepth - 1,
           includeFiles,
@@ -145,9 +150,9 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
       } else if (includeFiles) {
         yield {
           path,
-          isDirectory: entry.isDirectory(),
-          isFile: entry.isFile(),
-          isSymlink: entry.isSymbolicLink(),
+          isDirectory,
+          isFile,
+          isSymlink,
           name: entry.name,
         }
       }
