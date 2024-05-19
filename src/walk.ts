@@ -1,4 +1,3 @@
-import { execFile } from 'node:child_process'
 import { readdirSync, realpathSync, statSync } from 'node:fs'
 import { lstat, readdir, realpath, stat } from 'node:fs/promises'
 
