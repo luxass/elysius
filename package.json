@@ -8,7 +8,7 @@
     "email": "lucasnrgaard@gmail.com",
     "url": "https://luxass.dev"
   },
-  "packageManager": "pnpm@8.15.8",
+  "packageManager": "pnpm@9.1.1",
   "license": "MIT",
   "homepage": "https://github.com/luxass/elysius",
   "repository": {
@@ -48,12 +48,12 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@luxass/eslint-config": "^4.2.6",
+    "@luxass/eslint-config": "^4.4.3",
     "@types/node": "^20.9.2",
-    "eslint": "^8.56.0",
-    "eslint-plugin-format": "^0.1.0",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3",
-    "vitest": "^1.2.2"
+    "eslint": "^9.3.0",
+    "eslint-plugin-format": "^0.1.1",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   }
 }
