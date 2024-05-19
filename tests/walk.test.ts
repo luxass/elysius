@@ -1,8 +1,6 @@
-import { readFileSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
-import { basename, join, normalize } from 'node:path'
+import { join, normalize } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import type { WalkEntry, WalkOptions } from '../src/walk'
+import type { WalkEntry } from '../src/walk'
 import { walk, walkSync } from '../src/walk'
 
 it('should walk directory with default options', async () => {
