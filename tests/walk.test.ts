@@ -11,7 +11,7 @@ it('should walk directory with default options', async () => {
     files.push(entry)
   }
 
-  expect(files).toHaveLength(6)
+  expect(files).toHaveLength(8)
   expect(files[0].name).toBe('fixtures')
   expect(files[0].isDirectory).toBe(true)
   expect(files[0].path).toBe(join(__dirname, 'fixtures'))
@@ -26,8 +26,109 @@ it('should only walk root directory when disabled includeFiles and includeSymlin
     files.push(entry)
   }
 
-  expect(files).toHaveLength(3)
+  expect(files).toHaveLength(4)
   expect(files[0].name).toBe('fixtures')
   expect(files[0].isDirectory).toBe(true)
   expect(files[0].path).toBe(join(__dirname, 'fixtures'))
+})
+
+it('should only walk root directory when disabled includeDirs', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures'), {
+    includeDirs: false,
+  })) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(4)
+  expect(files[3].name).toBe('package.json')
+})
+
+it('should stop walking when maxDepth is reached', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures'), {
+    maxDepth: 1,
+  })) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(4)
+  expect(files).toStrictEqual([
+    {
+      path: join(__dirname, 'fixtures'),
+      name: 'fixtures',
+      isFile: false,
+      isDirectory: true,
+      isSymlink: false,
+    },
+    {
+      path: join(__dirname, 'fixtures', 'a'),
+      name: 'a',
+      isFile: false,
+      isDirectory: true,
+      isSymlink: false,
+    },
+    {
+      path: join(__dirname, 'fixtures', 'minions.jpg'),
+      isDirectory: false,
+      isFile: true,
+      isSymlink: false,
+      name: 'minions.jpg',
+    },
+    {
+      path: join(__dirname, 'fixtures', 'package.json'),
+      isDirectory: false,
+      isFile: true,
+      isSymlink: false,
+      name: 'package.json',
+    },
+  ])
+})
+
+it('should not include symlinks when option is disabled', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures', 'a', 'symlinks'), {
+    includeSymlinks: false,
+  })) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(1)
+  expect(files[0].name).toBe('symlinks')
+  expect(files[0].isDirectory).toBe(true)
+  expect(files[0].path).toBe(join(__dirname, 'fixtures', 'a', 'symlinks'))
+})
+
+it('should include symlinks by default', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures', 'a', 'symlinks'))) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(2)
+  expect(files[1]).toStrictEqual({
+    path: join(__dirname, 'fixtures', 'a', 'symlinks', 'README.md'),
+    name: 'README.md',
+    isFile: false,
+    isDirectory: false,
+    isSymlink: true,
+  })
+})
+
+it('should follow symlinks', async () => {
+  const files: WalkEntry[] = []
+  for await (const entry of walk(join(__dirname, 'fixtures', 'a', 'symlinks'), {
+    followSymlinks: true,
+  })) {
+    files.push(entry)
+  }
+
+  expect(files).toHaveLength(2)
+  expect(files[1]).toStrictEqual({
+    path: join(__dirname, 'fixtures', 'a', 'symlinks', 'README.md'),
+    name: 'README.md',
+    isFile: true,
+    isDirectory: false,
+    isSymlink: false,
+  })
 })
