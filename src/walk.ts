@@ -1,9 +1,7 @@
-import type { Dirent } from 'node:fs'
-import { statSync } from 'node:fs'
+import { readdirSync, realpathSync, statSync } from 'node:fs'
 import { lstat, readdir, realpath, stat } from 'node:fs/promises'
 
-import { basename, join, normalize, parse, resolve } from 'node:path'
-import process from 'node:process'
+import { basename, join, normalize } from 'node:path'
 
 export interface WalkEntry {
   /**
@@ -159,5 +157,89 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
     }
   } catch (err) {
     throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`)
+  }
+}
+
+/**
+ * Recursively walks through a directory and yields information about each file and directory encountered.
+ * @param {string} dir - The directory to walk through.
+ * @param {WalkOptions} options - Optional configuration options for the walk.
+ * @returns An iterable of `WalkEntry` objects representing each file and directory encountered during the walk.
+ */
+export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<WalkEntry> {
+  const {
+    maxDepth = Number.POSITIVE_INFINITY,
+    includeFiles = true,
+    includeDirs = true,
+    includeSymlinks = true,
+    followSymlinks = false,
+  } = options
+
+  if (maxDepth < 0) {
+    return
+  }
+
+  if (includeDirs) {
+    const info = statSync(dir)
+    yield {
+      path: dir,
+      name: basename(dir),
+      isFile: info.isFile(),
+      isDirectory: info.isDirectory(),
+      isSymlink: info.isSymbolicLink(),
+    }
+  }
+
+  let entries
+  try {
+    entries = readdirSync(dir, { withFileTypes: true })
+  } catch (err) {
+    throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`)
+  }
+
+  for (const entry of entries) {
+    const path = join(dir, entry.name)
+
+    let isDirectory = entry.isDirectory()
+    let isFile = entry.isFile()
+    let isSymlink = entry.isSymbolicLink()
+
+    if (isSymlink) {
+      if (!followSymlinks) {
+        if (includeSymlinks) {
+          yield {
+            path,
+            name: entry.name,
+            isFile,
+            isDirectory,
+            isSymlink,
+          }
+        }
+        continue
+      }
+      const realPath = realpathSync(path)
+      const stats = statSync(realPath)
+      isDirectory = stats.isDirectory()
+      isSymlink = stats.isSymbolicLink()
+      isFile = stats.isFile()
+    }
+
+    if (isSymlink || isDirectory) {
+      yield * walkSync(path, {
+        maxDepth: maxDepth - 1,
+        includeFiles,
+        includeDirs,
+        includeSymlinks,
+        followSymlinks,
+      })
+    } else if (includeFiles) {
+      yield {
+        path,
+        name: entry.name,
+        isFile,
+        isDirectory,
+        isSymlink,
+      }
+    }
   }
 }
