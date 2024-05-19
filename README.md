@@ -3,22 +3,16 @@
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 
-## ✨ Features
-
-- ESM Support
-- Tree Shakeable
-- Supports `async` and `sync` functions
-
 ## 📦 Installation
 
 ```sh
-pnpm install elysius
+npm install elysius
 ```
 
 ## 📚 Usage
 
 ```ts
-import { find, findSync } from 'elysius'
+import { find, findSync, walk, walkSync } from 'elysius'
 
 const path = await find('package.json') // returns `null` if not found
 const path = findSync('package.json') // returns `null` if not found
@@ -49,6 +43,10 @@ const path = findSync(['package.json', 'tsconfig.json'], {
     return false
   }
 }) // returns `package.json` if it has a version field
+
+const paths = await walk('src') // returns an array of all files in `src`
+
+const paths = walkSync('src') // returns an array of all files in `src`
 ```
 
 ## 📄 License
