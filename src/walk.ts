@@ -1,7 +1,7 @@
-import { readdirSync, realpathSync, statSync } from 'node:fs'
-import { lstat, readdir, realpath, stat } from 'node:fs/promises'
+import { readdirSync, realpathSync, statSync } from "node:fs";
+import { lstat, readdir, realpath, stat } from "node:fs/promises";
 
-import { basename, join, normalize } from 'node:path'
+import { basename, join, normalize } from "node:path";
 
 export interface WalkEntry {
   /**
@@ -9,27 +9,27 @@ export interface WalkEntry {
    *
    * NOTE: This is the name of the file or directory, not the full path.
    */
-  name: string
+  name: string;
 
   /**
    * Full path of the entry.
    */
-  path: string
+  path: string;
 
   /**
    * Whether or not the entry is a file.
    */
-  isFile: boolean
+  isFile: boolean;
 
   /**
    * Whether or not the entry is a directory.
    */
-  isDirectory: boolean
+  isDirectory: boolean;
 
   /**
    * Whether or not the entry is a symbolic link.
    */
-  isSymlink: boolean
+  isSymlink: boolean;
 }
 
 export interface WalkOptions {
@@ -38,20 +38,20 @@ export interface WalkOptions {
    *
    * @default {Number.POSITIVE_INFINITY}
    */
-  maxDepth?: number
+  maxDepth?: number;
 
   /**
    * Whether to include files in the walk.
    *
    * @default {true}
    */
-  includeFiles?: boolean
+  includeFiles?: boolean;
 
   /**
    * Whether to include directories in the walk.
    * @default {true}
    */
-  includeDirs?: boolean
+  includeDirs?: boolean;
 
   /**
    * Whether to include symbolic links in the walk.
@@ -61,21 +61,21 @@ export interface WalkOptions {
    *
    * @default {true}
    */
-  includeSymlinks?: boolean
+  includeSymlinks?: boolean;
 
   /**
    * Whether to follow symbolic links.
    *
    * @default {false}
    */
-  followSymlinks?: boolean
+  followSymlinks?: boolean;
 
   /**
    * An array of regular expressions to exclude from the walk.
    *
    * @default {[]}
    */
-  exclude?: RegExp[]
+  exclude?: RegExp[];
 }
 
 function shouldIncludePath(
@@ -83,9 +83,9 @@ function shouldIncludePath(
   exclude?: RegExp[],
 ): boolean {
   if (exclude && exclude.some((pattern): boolean => !!path.match(pattern))) {
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 /**
@@ -102,37 +102,37 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
     includeSymlinks = true,
     followSymlinks = false,
     exclude,
-  } = options
+  } = options;
 
   if (maxDepth < 0) {
-    return
+    return;
   }
   if (includeDirs && shouldIncludePath(dir, exclude)) {
-    const info = await stat(dir)
+    const info = await stat(dir);
     yield {
       path: dir,
       name: basename(dir),
       isFile: info.isFile(),
       isDirectory: info.isDirectory(),
       isSymlink: info.isSymbolicLink(),
-    }
+    };
   }
   if (maxDepth < 1 || !shouldIncludePath(dir, exclude)) {
-    return
+    return;
   }
 
   try {
     const entries = await readdir(dir, {
       withFileTypes: true,
-      encoding: 'utf-8',
-    })
+      encoding: "utf-8",
+    });
 
     for (const entry of entries) {
-      const path = join(dir, entry.name)
+      const path = join(dir, entry.name);
 
-      let isDirectory = entry.isDirectory()
-      let isFile = entry.isFile()
-      let isSymlink = entry.isSymbolicLink()
+      let isDirectory = entry.isDirectory();
+      let isFile = entry.isFile();
+      let isSymlink = entry.isSymbolicLink();
 
       if (isSymlink) {
         if (!followSymlinks) {
@@ -143,18 +143,18 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
               isFile,
               isSymlink,
               name: entry.name,
-            }
+            };
           }
-          continue
+          continue;
         }
-        const realPath = await realpath(path)
+        const realPath = await realpath(path);
         // Caveat emptor: don't assume |path| is not a symlink. realpath()
         // resolves symlinks but another process can replace the file system
         // entity with a different type of entity before we call lstat().
-        const stats = await lstat(realPath)
-        isDirectory = stats.isDirectory()
-        isSymlink = stats.isSymbolicLink()
-        isFile = stats.isFile()
+        const stats = await lstat(realPath);
+        isDirectory = stats.isDirectory();
+        isSymlink = stats.isSymbolicLink();
+        isFile = stats.isFile();
       }
 
       if (isSymlink || isDirectory) {
@@ -164,7 +164,7 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
           includeDirs,
           includeSymlinks,
           followSymlinks,
-        })
+        });
       } else if (includeFiles && shouldIncludePath(path, exclude)) {
         yield {
           path,
@@ -172,11 +172,11 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
           isFile,
           isSymlink,
           name: entry.name,
-        }
+        };
       }
     }
   } catch (err) {
-    throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`)
+    throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`);
   }
 }
 
@@ -194,40 +194,40 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
     includeSymlinks = true,
     followSymlinks = false,
     exclude,
-  } = options
+  } = options;
 
   if (maxDepth < 0) {
-    return
+    return;
   }
 
   if (includeDirs && shouldIncludePath(dir, exclude)) {
-    const info = statSync(dir)
+    const info = statSync(dir);
     yield {
       path: dir,
       name: basename(dir),
       isFile: info.isFile(),
       isDirectory: info.isDirectory(),
       isSymlink: info.isSymbolicLink(),
-    }
+    };
   }
 
   if (maxDepth < 1 || !shouldIncludePath(dir, exclude)) {
-    return
+    return;
   }
 
-  let entries
+  let entries;
   try {
-    entries = readdirSync(dir, { withFileTypes: true })
+    entries = readdirSync(dir, { withFileTypes: true });
   } catch (err) {
-    throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`)
+    throw new Error(`Error walking path "${normalize(dir)}": ${err instanceof Error ? err.message : err}`);
   }
 
   for (const entry of entries) {
-    const path = join(dir, entry.name)
+    const path = join(dir, entry.name);
 
-    let isDirectory = entry.isDirectory()
-    let isFile = entry.isFile()
-    let isSymlink = entry.isSymbolicLink()
+    let isDirectory = entry.isDirectory();
+    let isFile = entry.isFile();
+    let isSymlink = entry.isSymbolicLink();
 
     if (isSymlink) {
       if (!followSymlinks) {
@@ -238,15 +238,15 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
             isFile,
             isDirectory,
             isSymlink,
-          }
+          };
         }
-        continue
+        continue;
       }
-      const realPath = realpathSync(path)
-      const stats = statSync(realPath)
-      isDirectory = stats.isDirectory()
-      isSymlink = stats.isSymbolicLink()
-      isFile = stats.isFile()
+      const realPath = realpathSync(path);
+      const stats = statSync(realPath);
+      isDirectory = stats.isDirectory();
+      isSymlink = stats.isSymbolicLink();
+      isFile = stats.isFile();
     }
 
     if (isSymlink || isDirectory) {
@@ -256,7 +256,7 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
         includeDirs,
         includeSymlinks,
         followSymlinks,
-      })
+      });
     } else if (includeFiles && shouldIncludePath(path, exclude)) {
       yield {
         path,
@@ -264,7 +264,7 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
         isFile,
         isDirectory,
         isSymlink,
-      }
+      };
     }
   }
 }

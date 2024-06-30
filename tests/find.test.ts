@@ -1,118 +1,118 @@
-import { readFileSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
-import { basename, join } from 'node:path'
-import { describe, expect, it } from 'vitest'
-import { find, findSync } from '../src/find'
+import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { find, findSync } from "../src/find";
 
-it('finds a single file without cwd', async () => {
-  const result = await find(['minions.jpg', 'package.json'])
+it("finds a single file without cwd", async () => {
+  const result = await find(["minions.jpg", "package.json"]);
 
-  expect(result).toBe(join(__dirname, '..', 'package.json'))
-})
+  expect(result).toBe(join(__dirname, "..", "package.json"));
+});
 
-it('finds a single file with cwd', async () => {
-  const result = await find('package.json', {
-    cwd: join(__dirname, 'fixtures', 'a', 'b'),
-  })
+it("finds a single file with cwd", async () => {
+  const result = await find("package.json", {
+    cwd: join(__dirname, "fixtures", "a", "b"),
+  });
 
-  expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
-  expect(result).not.toBe(join(__dirname, 'package.json'))
-})
+  expect(result).toBe(join(__dirname, "fixtures", "package.json"));
+  expect(result).not.toBe(join(__dirname, "package.json"));
+});
 
-it('expect null when no files found', async () => {
-  const result = await find('package.json5')
+it("expect null when no files found", async () => {
+  const result = await find("package.json5");
 
-  expect(result).toBeNull()
-})
+  expect(result).toBeNull();
+});
 
-it('find file with custom test function', async () => {
-  const result = await find('package.json', {
-    cwd: join(__dirname, 'fixtures', 'a', 'b'),
+it("find file with custom test function", async () => {
+  const result = await find("package.json", {
+    cwd: join(__dirname, "fixtures", "a", "b"),
     async test(file) {
-      const base = basename(file)
-      if (base === 'package.json') {
-        const content = JSON.parse(await readFile(file, 'utf-8'))
-        return content.version != null
+      const base = basename(file);
+      if (base === "package.json") {
+        const content = JSON.parse(await readFile(file, "utf-8"));
+        return content.version != null;
       }
-      return false
+      return false;
     },
-  })
+  });
 
-  expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
-})
+  expect(result).toBe(join(__dirname, "fixtures", "package.json"));
+});
 
-it('expect find to stop when stop is reached', async () => {
-  const result = await find('package.json', {
-    cwd: join(__dirname, 'fixtures', 'a', 'b'),
-    stop: join(__dirname, 'fixtures', 'a'),
-  })
+it("expect find to stop when stop is reached", async () => {
+  const result = await find("package.json", {
+    cwd: join(__dirname, "fixtures", "a", "b"),
+    stop: join(__dirname, "fixtures", "a"),
+  });
 
-  expect(result).toBeNull()
-})
+  expect(result).toBeNull();
+});
 
-describe('find sync', () => {
-  it('finds a single file without cwd', () => {
-    const result = findSync(['minions.jpg', 'package.json'])
+describe("find sync", () => {
+  it("finds a single file without cwd", () => {
+    const result = findSync(["minions.jpg", "package.json"]);
 
-    expect(result).toBe(join(__dirname, '..', 'package.json'))
-  })
+    expect(result).toBe(join(__dirname, "..", "package.json"));
+  });
 
-  it('finds a single file with cwd', () => {
-    const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixtures', 'a', 'b'),
-    })
+  it("finds a single file with cwd", () => {
+    const result = findSync("package.json", {
+      cwd: join(__dirname, "fixtures", "a", "b"),
+    });
 
-    expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
-    expect(result).not.toBe(join(__dirname, 'package.json'))
-  })
+    expect(result).toBe(join(__dirname, "fixtures", "package.json"));
+    expect(result).not.toBe(join(__dirname, "package.json"));
+  });
 
-  it('expect null when no files found', () => {
-    const result = findSync('package.json5')
+  it("expect null when no files found", () => {
+    const result = findSync("package.json5");
 
-    expect(result).toBeNull()
-  })
+    expect(result).toBeNull();
+  });
 
-  it('find file with custom test function', () => {
-    const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixtures', 'a', 'b'),
+  it("find file with custom test function", () => {
+    const result = findSync("package.json", {
+      cwd: join(__dirname, "fixtures", "a", "b"),
       test(file) {
-        const base = basename(file)
-        if (base === 'package.json') {
-          const content = JSON.parse(readFileSync(file, 'utf-8'))
-          return content.version != null
+        const base = basename(file);
+        if (base === "package.json") {
+          const content = JSON.parse(readFileSync(file, "utf-8"));
+          return content.version != null;
         }
-        return false
+        return false;
       },
-    })
+    });
 
-    expect(result).toBe(join(__dirname, 'fixtures', 'package.json'))
-  })
+    expect(result).toBe(join(__dirname, "fixtures", "package.json"));
+  });
 
-  it('throw error when using async test inside sync', () => {
+  it("throw error when using async test inside sync", () => {
     const result = () =>
-      findSync('package.json', {
-        cwd: join(__dirname, 'fixtures', 'a', 'b'),
+      findSync("package.json", {
+        cwd: join(__dirname, "fixtures", "a", "b"),
         async test(file) {
-          const base = basename(file)
-          if (base === 'package.json') {
-            const content = JSON.parse(await readFile(file, 'utf-8'))
-            return content.version != null
+          const base = basename(file);
+          if (base === "package.json") {
+            const content = JSON.parse(await readFile(file, "utf-8"));
+            return content.version != null;
           }
-          return false
+          return false;
         },
-      })
+      });
 
     expect(() => result()).toThrowError(
       /^You are using a async test in sync mode.$/,
-    )
-  })
+    );
+  });
 
-  it('expect find to stop when stop is reached', () => {
-    const result = findSync('package.json', {
-      cwd: join(__dirname, 'fixtures', 'a', 'b'),
-      stop: join(__dirname, 'fixtures', 'a'),
-    })
+  it("expect find to stop when stop is reached", () => {
+    const result = findSync("package.json", {
+      cwd: join(__dirname, "fixtures", "a", "b"),
+      stop: join(__dirname, "fixtures", "a"),
+    });
 
-    expect(result).toBeNull()
-  })
-})
+    expect(result).toBeNull();
+  });
+});
