@@ -62,7 +62,7 @@
     "@types/node": "^20.9.2",
     "eslint": "^9.3.0",
     "eslint-plugin-format": "^0.1.1",
-    "tsup": "^8.0.2",
+    "tsup": "^8.1.0",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
   }
