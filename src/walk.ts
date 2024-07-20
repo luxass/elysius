@@ -1,6 +1,27 @@
+/**
+ * @module walk
+ *
+ * Recursively walk through a directory and yield information about each file and directory encountered.
+ *
+ * @example
+ * ```ts
+ * import { walk, walkSync } from "elysius";
+ *
+ * for await (const entry of walk("src")) {
+ *   console.log(entry);
+ * }
+ *
+ * const files = Array.fromAsync(walk("src"));
+ *
+ * for (const entry of walkSync("src")) {
+ *   console.log(entry);
+ * }
+ *
+ * const files = Array.from(walkSync("src"));
+ * ```
+ */
 import { readdirSync, realpathSync, statSync } from "node:fs";
 import { lstat, readdir, realpath, stat } from "node:fs/promises";
-
 import { basename, join, normalize } from "node:path";
 
 export interface WalkEntry {

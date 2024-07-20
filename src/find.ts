@@ -1,3 +1,18 @@
+/**
+ * @module find
+ *
+ * Find files and directories by traversing
+ *
+ * @example
+ * ```ts
+ * import { find, findSync } from "elysius";
+ *
+ * const path = await find("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
+ *
+ * const path = findSync("package.json"); // => /home/[REDACTED]/[REDACTED]/package.json
+ * ```
+ */
+
 import { statSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { parse, resolve } from "node:path";

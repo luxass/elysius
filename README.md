@@ -45,9 +45,17 @@ const path = findSync(["package.json", "tsconfig.json"], {
   }
 }); // returns `package.json` if it has a version field
 
-const paths = await walk("src"); // returns an array of all files in `src`
+for await (const entry of walk("src")) {
+  console.log(entry); // prints one file at a time
+}
 
-const paths = walkSync("src"); // returns an array of all files in `src`
+const paths = Array.fromAsync(walk("src")); // returns an array of all files in `src`
+
+for (const entry of walkSync("src")) {
+  console.log(entry); // prints one file at a time
+}
+
+const paths = Array.from(walkSync("src")); // returns an array of all files in `src`
 ```
 
 ## 📄 License

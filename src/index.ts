@@ -1,3 +1,9 @@
+/**
+ * @module
+ *
+ * Find files and directories by traversing
+ */
+
 export {
   find,
   findSync,
