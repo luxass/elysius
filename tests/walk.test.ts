@@ -1,6 +1,6 @@
+import type { WalkEntry } from "../src/walk";
 import { join, normalize } from "node:path";
 import { describe, expect, it } from "vitest";
-import type { WalkEntry } from "../src/walk";
 import { walk, walkSync } from "../src/walk";
 
 it("should walk directory with default options", async () => {
