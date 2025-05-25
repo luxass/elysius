@@ -179,7 +179,7 @@ export async function* walk(dir: string, options: WalkOptions = {}): AsyncIterab
       }
 
       if (isSymlink || isDirectory) {
-        yield * walk(path, {
+        yield* walk(path, {
           maxDepth: maxDepth - 1,
           includeFiles,
           includeDirs,
@@ -271,7 +271,7 @@ export function* walkSync(dir: string, options: WalkOptions = {}): Iterable<Walk
     }
 
     if (isSymlink || isDirectory) {
-      yield * walkSync(path, {
+      yield* walkSync(path, {
         maxDepth: maxDepth - 1,
         includeFiles,
         includeDirs,
