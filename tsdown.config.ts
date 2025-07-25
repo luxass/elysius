@@ -6,7 +6,7 @@ export default defineConfig({
     "./src/find.ts",
     "./src/walk.ts",
   ],
-  format: ["esm", "cjs"],
+  format: ["esm"],
   clean: true,
   dts: true,
   treeshake: true,
