@@ -30,7 +30,7 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       vitest:
-        specifier: ^3.2.4
+        specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.5)(jiti@2.5.1)(yaml@2.8.0)
 
 packages:
