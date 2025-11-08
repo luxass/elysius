@@ -33,7 +33,7 @@ jobs:
         run: npm install -g npm@latest
 
       - name: generate changelog
-        run: pnpx changelogithub
+        run: pnpm dlx changelogithub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -55,13 +55,13 @@ jobs:
           fi
 
       - name: publish to npm
-        run: npm publish --tag $TAG --access public --no-git-checks
+        run: pnpm publish --tag $TAG --access public --no-git-checks
         env:
           TAG: ${{ steps.tag.outputs.tag }}
           NPM_CONFIG_PROVENANCE: true
 
       - name: publish to jsr
-        run: npx jsr publish --allow-dirty
+        run: pnpm dlx jsr publish --allow-dirty
 
       - name: print dirty files
         run: git status --porcelain
