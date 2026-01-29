@@ -42,17 +42,17 @@
   },
   "devDependencies": {
     "@luxass/eslint-config": "6.0.3",
-    "@types/node": "22.19.0",
+    "@types/node": "22.19.7",
     "eslint": "9.39.1",
     "eslint-plugin-format": "1.0.2",
-    "publint": "0.3.15",
-    "tsdown": "0.16.1",
+    "publint": "0.3.17",
+    "tsdown": "0.20.1",
     "typescript": "5.9.3",
     "vitest": "4.0.8"
   },
   "pnpm": {
     "overrides": {
-      "rolldown": "1.0.0-beta.47"
+      "rolldown": "1.0.0-rc.1"
     }
   }
 }
